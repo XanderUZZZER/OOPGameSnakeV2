@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ConsoleGraphics.cs">
+      <HintPath>..\..\OOPGame\OOPGame-Snake\lib\ConsoleGraphics.cs.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,8 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Color.cs" />
+    <Compile Include="GameEngine.cs" />
+    <Compile Include="GameEngineSnake.cs" />
+    <Compile Include="IGameObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Cell.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
