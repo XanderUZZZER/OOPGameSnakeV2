@@ -6,7 +6,7 @@ namespace OOPGameSnakeV2
     {
         public GameEngineSnake(ConsoleGraphics graphics) : base(graphics)
         {
-            AddObject(new Cell());
+            AddObject(new PlayingArea());
         }
     }
 }
