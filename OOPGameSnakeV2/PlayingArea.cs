@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NConsoleGraphics;
+using System.IO;
 
 namespace OOPGameSnakeV2
 {
@@ -19,9 +20,13 @@ namespace OOPGameSnakeV2
         Snake snake;
         Food food;
 
+        public static int Score = 0;
+        public static List<int> TopTen = new List<int>();
+        private string[] tempText;
+
         public PlayingArea()
         {
-            background = new Background();            
+            background = new Background();
             Width = background.WidthActive;
             Height = background.HeightActive;
             X = background.X;
@@ -33,9 +38,40 @@ namespace OOPGameSnakeV2
         void StartNewGame()
         {
             background = new Background();
-            //snake = new Snake();
-            food = new Food(background.X, background.Y, background.WidthActive, background.HeightActive, background.BorderThikcness, Color.Red);
+            snake = new Snake(X, Y, Width, Height);
+            food = new Food(X, Y, Width, Height, Color.Red);
+            LoadTopTen();
         }
+
+        void LoadTopTen()
+        {
+            if (!File.Exists("SnakeTopTen.txt"))
+            {
+                // Create a file to write to.
+                tempText = new string[] { "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" };
+                File.WriteAllLines("SnakeTopTen.txt", tempText);
+            }
+            else
+            {
+                TopTen.Clear();
+                tempText = File.ReadAllLines("SnakeTopTen.txt");
+                for (int i = 0; i < 10; i++)
+                {
+                    TopTen.Add(Convert.ToInt32(tempText[i]));
+                }
+            }
+        }
+
+        void UpdateTopTenFile()
+        {
+            tempText = File.ReadAllLines("SnakeTopTen.txt");
+            for (int i = 0; i < TopTen.Count; i++)
+            {
+                tempText[i] = TopTen[i].ToString();
+            }
+            File.WriteAllLines("SnakeTopTen.txt", tempText);
+        }
+
 
         void ShowInfo(ConsoleGraphics graphics)
         {
@@ -49,21 +85,40 @@ namespace OOPGameSnakeV2
             graphics.DrawString("PlayingArea.H: " + Height.ToString(), "Consolas", (uint)Color.Blue, 0, 240);
             graphics.DrawString("Background.WidActive: " + background.WidthActive.ToString(), "Consolas", (uint)Color.Blue, 0, 270);
             graphics.DrawString("PlayingArea.HiActive: " + background.HeightActive.ToString(), "Consolas", (uint)Color.Blue, 0, 300);
-            graphics.DrawString("Food XMAX: " + food.XMax.ToString(), "Consolas", (uint)Color.Blue, 0, 330);
-            graphics.DrawString("Food YMAX: " + food.YMax.ToString(), "Consolas", (uint)Color.Blue, 0, 360);
+            graphics.DrawString("Food XEnd: " + food.XEnd.ToString(), "Consolas", (uint)Color.Blue, 0, 330);
+            graphics.DrawString("Food YEnd: " + food.YEnd.ToString(), "Consolas", (uint)Color.Blue, 0, 360);
         }
 
         public void Render(ConsoleGraphics graphics)
         {
             background.Render(graphics);
-            ShowInfo(graphics);
-            //snake.Render(graphics);
+            //ShowInfo(graphics);
+            snake.Render(graphics);
             food.Render(graphics);
         }
 
         public void Update(GameEngine engine)
         {
-            food.Update();//throw new NotImplementedException();
+            snake.Update(engine);
+            snake.Eat(food);
+            food.Update();
+            Score = snake.FoodEated * 10;
+            snake.HitItself();
+            if (snake.HitItself())
+            {
+                for (int i = 0; i < TopTen.Count; i++)
+                {
+                    if (Score > TopTen[i])
+                    {
+                        TopTen.Insert(i, Score);
+                        TopTen.Remove(TopTen.Last());
+                        break;
+                    }
+                }
+
+                UpdateTopTenFile();
+                StartNewGame();
+            }
         }
     }
 }

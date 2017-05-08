@@ -7,6 +7,7 @@ namespace OOPGameSnakeV2
         public GameEngineSnake(ConsoleGraphics graphics) : base(graphics)
         {
             AddObject(new PlayingArea());
+            AddObject(new StatArea(PlayingArea.Width, 0, graphics.ClientWidth - PlayingArea.Width, PlayingArea.Height));
         }
     }
 }

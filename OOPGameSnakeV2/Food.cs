@@ -10,30 +10,35 @@ namespace OOPGameSnakeV2
     class Food : Cell
     {
         Random randomPosition = new Random();
+        public int XStart { get; set; }
+        public int YStart { get; set; }
+        public int XEnd { get; set; }
+        public int YEnd { get; set; }
+        public bool CanCreateNext { get; set; }
 
-        public Food(int x, int y, int xMax, int yMax, int offset, Color color) : base(x, y, xMax, yMax, offset, color)
+        public Food(int xStart, int yStart, int xEnd, int yEnd, Color color) : base(xStart, yStart, color)
         {
+            XStart = xStart;
+            YStart = xStart;
+            XEnd = xEnd;
+            YEnd = yEnd;
+            CanCreateNext = true;
+
+            CreateNext();
         }
 
         public void CreateNext()
         {
-            X = randomPosition.Next(0, XMax/Size - 1) * Size + Offset;
-            Y = randomPosition.Next(0, YMax/Size - 1) * Size + Offset;
-            //X = (XMax / Size - 1) * Size + Offset;
-            //Y = (YMax / Size - 1) * Size + Offset;
+            if (CanCreateNext)
+            {
+                X = randomPosition.Next(0, XEnd / Size - 1) * Size + XStart;
+                Y = randomPosition.Next(0, YEnd / Size - 1) * Size + YStart;
+            }
+            CanCreateNext = false;
         }
 
         public void Update()
         {
-            if (Input.IsKeyDown(Keys.UP))
-            {
-                CreateNext();
-                if (Color == Color.Red)
-                    Color = Color.Green;
-                else
-                    Color = Color.Red;
-            }
-                
         }
     }
 }
