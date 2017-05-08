@@ -8,7 +8,7 @@ namespace OOPGameSnakeV2
         static void Main(string[] args)
         {
             Console.WindowWidth = 70;     //Window width in columns
-            Console.WindowHeight = 48;    //Window height in rows
+            Console.WindowHeight = 44;    //Window height in rows
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
             Console.Title = "Snake The Game";
             //Console.BackgroundColor = ConsoleColor.Gray;
@@ -20,8 +20,10 @@ namespace OOPGameSnakeV2
             Console.WriteLine($"graphics.ClientWidth {graphics.ClientWidth}");
             Console.WriteLine($"Console.WindowHeight {Console.WindowHeight}");
             Console.WriteLine($"graphics.ClientHeight {graphics.ClientHeight}");
+            Console.WriteLine($"relative Height {graphics.ClientHeight / Console.WindowHeight}");
+            Console.WriteLine($"relative Width {graphics.ClientWidth / Console.WindowWidth}");
             Console.WindowWidth = 69;     //Window width in columns
-            Console.WindowHeight = 47;    //Window height in rows
+            Console.WindowHeight = 43;    //Window height in rows
             Console.WriteLine($"Console.WindowWidth {Console.WindowWidth}");
             Console.WriteLine($"graphics.ClientWidth {graphics.ClientWidth}");
             Console.WriteLine($"Console.WindowHeight {Console.WindowHeight}");
