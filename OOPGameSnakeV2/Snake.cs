@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using NConsoleGraphics;
 
 namespace OOPGameSnakeV2
 {
     class Snake : IGameObject
     {
-        List<Cell> body = new List<Cell>(3);
-        int xStart;                           //Snake tail start position
-        int yStart;
-        int xEnd;
-        int yEnd;
-        Direction direction = Direction.Up;
-        Direction prohibitedDirection = Direction.Down;
-        Color color = Color.Black;
+        private List<Cell> body = new List<Cell>(3);
+        private int xStart;                                     //available top left coords
+        private int yStart;
+        private int xEnd;                                       //available bottom right coords
+        private int yEnd;
+        private Direction direction = Direction.Up;
+        private Direction prohibitedDirection = Direction.Down; //snake can't move back
+        private Color color = Color.Black;
         private bool canMove = false;
         public int FoodEated = 0;
 
@@ -25,7 +24,7 @@ namespace OOPGameSnakeV2
             this.xEnd = xEnd + xStart;
             this.yEnd = yEnd + yStart;
             
-            body.Add(new Cell(xEnd / 2 + xStart, yEnd / 2 + yStart, color));
+            body.Add(new Cell(xEnd / 2 + xStart, yEnd / 2 + yStart, color));                    //snake start position, from the center
             body.Add(new Cell(xEnd / 2 + xStart, yEnd / 2 + Cell.Size + yStart, color));
             body.Add(new Cell(xEnd / 2 + xStart, yEnd / 2 + Cell.Size * 2 + yStart, color));
         }
@@ -102,7 +101,7 @@ namespace OOPGameSnakeV2
                     {
                         if (food.X == c.X && food.Y == c.Y)
                         {
-                            food.CanCreateNext = true;
+                            food.CanCreateNext = true;          // food can't appear on the snake body
                             break;
                         }
                     }

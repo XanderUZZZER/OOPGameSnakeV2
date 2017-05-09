@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NConsoleGraphics;
 
 namespace OOPGameSnakeV2
 {
     class Food : Cell
     {
-        Random randomPosition = new Random();
-        public int XStart { get; set; }
+        public int XStart { get; set; }         //available top left coords
         public int YStart { get; set; }
-        public int XEnd { get; set; }
+        public int XEnd { get; set; }           //available bottom right coords
         public int YEnd { get; set; }
-        public bool CanCreateNext { get; set; }
+        public bool CanCreateNext { get; set; } //flag enabling creatining next food
+        private Random randomPosition = new Random();
 
         public Food(int xStart, int yStart, int xEnd, int yEnd, Color color) : base(xStart, yStart, color)
         {
@@ -23,7 +18,6 @@ namespace OOPGameSnakeV2
             XEnd = xEnd;
             YEnd = yEnd;
             CanCreateNext = true;
-
             CreateNext();
         }
 
@@ -35,10 +29,6 @@ namespace OOPGameSnakeV2
                 Y = randomPosition.Next(0, YEnd / Size - 1) * Size + YStart;
             }
             CanCreateNext = false;
-        }
-
-        public void Update()
-        {
         }
     }
 }

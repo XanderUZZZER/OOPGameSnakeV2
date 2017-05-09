@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NConsoleGraphics;
+﻿using NConsoleGraphics;
 
 namespace OOPGameSnakeV2
 {
     class Background : IGameObject
     {
-        public int X { get; set; }
+        //Object shows playing field background
+        public int X { get; set; }                                  //top left (starting) coords of active playing field
         public int Y { get; set; }
-        public int WidthTotal { get; set; }
+        public int WidthTotal { get; set; }                         //total dimesions including border thickness
         public int HeightTotal { get; set; }
-        public int WidthActive { get; set; }
-        public int HeightActive { get; set; }
+        public int WidthActive { get; set; }                        //dimensions of active playing field (excluding border thickness)
+        public int HeightActive { get; set; }                       //classic game field consists of 10*20 cells
         public Color Color { get; set; } = Color.BackgroundColor;
         public int BorderThikcness { get; set; } = 4;
         public Color BorderColor { get; set; } = Color.Black;
-        public Cell FillingCell { get; set; }
+        public Cell FillingCell { get; set; }                       //decorative filling for background - classic brick game style
 
         public Background()
         {
