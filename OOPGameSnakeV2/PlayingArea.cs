@@ -47,6 +47,10 @@ namespace OOPGameSnakeV2
                 // Create an empty file to write to.
                 string[] tempText = new string[] { "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" };
                 File.WriteAllLines("SnakeTopTen.txt", tempText);
+                for (int i = 0; i < 10; i++)
+                {
+                    TopTen.Add(Convert.ToInt32(tempText[i]));
+                }
             }
             else
             {
@@ -61,7 +65,7 @@ namespace OOPGameSnakeV2
 
         void UpdateTopTenFile()
         {
-            string[] tempText = File.ReadAllLines("SnakeTopTen.txt");
+            string[] tempText = new string[TopTen.Count];
             for (int i = 0; i < TopTen.Count; i++)
             {
                 tempText[i] = TopTen[i].ToString();
