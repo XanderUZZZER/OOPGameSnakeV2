@@ -6,7 +6,7 @@ namespace OOPGameSnakeV2
 {
     class Snake : IGameObject
     {
-        private List<Cell> body = new List<Cell>(3);
+        private List<Cell> body = new List<Cell>(3);            //default snake body consists of 3 cells
         private int xStart;                                     //available top left coords
         private int yStart;
         private int xEnd;                                       //available bottom right coords
@@ -14,8 +14,9 @@ namespace OOPGameSnakeV2
         private Direction direction = Direction.Up;
         private Direction prohibitedDirection = Direction.Down; //snake can't move back
         private Color color = Color.Black;
-        private bool canMove = false;
-        public int FoodEated = 0;
+        public int FoodEated { get; private set; } = 0;
+        public bool CanMove { get; private set; } = false;
+        public bool IsHit { get; private set; } = false;        //flag indicates, that snake hits itself
 
         public Snake(int xStart, int yStart, int xEnd, int yEnd)
         {
@@ -23,11 +24,19 @@ namespace OOPGameSnakeV2
             this.yStart = yStart;
             this.xEnd = xEnd + xStart;
             this.yEnd = yEnd + yStart;
-            
-            body.Add(new Cell(xEnd / 2 + xStart, yEnd / 2 + yStart, color));                    //snake start position, from the center
-            body.Add(new Cell(xEnd / 2 + xStart, yEnd / 2 + Cell.Size + yStart, color));
-            body.Add(new Cell(xEnd / 2 + xStart, yEnd / 2 + Cell.Size * 2 + yStart, color));
+
+            CreateNewSnake();
         }
+
+        public void CreateNewSnake()
+        {
+            body.Clear();
+            body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + yStart, color));                    //snake start position, from the center
+            body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + Cell.Size + yStart, color));
+            body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + Cell.Size * 2 + yStart, color));
+            FoodEated = 0;
+            IsHit = false;
+    }
 
         public void Move()
         {
@@ -90,6 +99,7 @@ namespace OOPGameSnakeV2
             if ((body.First().X == food.X) && (body.First().Y == food.Y))
             {
                 body.Insert(0, new Cell(food.X, food.Y, color));
+                FoodEated++;
                 food.CanCreateNext = true;
                 do
                 {
@@ -102,25 +112,22 @@ namespace OOPGameSnakeV2
                             break;
                         }
                     }
-                } while (food.CanCreateNext);
-                FoodEated++;
+                } while (food.CanCreateNext);                
             }
         }
 
-        public bool HitItself()
+        public void HitItself()
         {
             var head = body[0];
-            bool isHit = false;
             for (int i = 3; i < body.Count(); i++)
             {
                 if (head.X == body[i].X && head.Y == body[i].Y)
                 {
-                    isHit = true;
-                    canMove = false;
+                    IsHit = true;
+                    CanMove = false;
                     break;
                 }
             }
-            return isHit;
         }
 
         public void Render(ConsoleGraphics graphics)
@@ -133,11 +140,6 @@ namespace OOPGameSnakeV2
 
         public void Update(GameEngine engine)
         {
-            if (canMove)
-            {
-                Move();
-            }
-            
             if (Input.IsKeyDown(Keys.UP) && (prohibitedDirection != Direction.Up))
             {
                 direction = Direction.Up;
@@ -160,11 +162,11 @@ namespace OOPGameSnakeV2
             }
             if (Input.IsKeyDown(Keys.SPACE))
             {
-                canMove = true;
+                CanMove = true;
             }
             if (Input.IsKeyDown(Keys.ESCAPE))
             {
-                canMove = false;
+                CanMove = false;
             }
         }
     }

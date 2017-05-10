@@ -9,34 +9,34 @@ namespace OOPGameSnakeV2
     class PlayingArea : IGameObject
     {
         //Object shows all active objects in playing field
+        private Background background;
+        private Snake snake;
+        private Food food;
         public static int X { get; set; }
         public static int Y { get; set; }
         public static int Width { get; set; }
-        public static int Height { get; set; }
-        Background background;
-        Snake snake;
-        Food food;
-
+        public static int Height { get; set; } 
         public static int Score = 0;
-        public static List<int> TopTen = new List<int>();
+        public static List<int> TopTen = new List<int>(10);
 
-        public PlayingArea()
+        public PlayingArea(Background background, Snake snake, Food food)
         {
-            background = new Background();
+            this.background = background;
             Width = background.WidthActive;
             Height = background.HeightActive;
             X = background.X;
             Y = background.Y;
-
+            this.snake = snake;
+            this.food = food;            
             StartNewGame();
         }
 
         void StartNewGame()
         {
-            background = new Background();
-            snake = new Snake(X, Y, Width, Height);
-            food = new Food(X, Y, Width, Height, Color.Red);
             LoadTopTen();
+            food.CreateNext();
+            snake.CreateNewSnake();     
+            
         }
 
         void LoadTopTen()
@@ -65,7 +65,7 @@ namespace OOPGameSnakeV2
         void UpdateTopTenFile()
         {
             string[] tempText = new string[TopTen.Count];
-            for (int i = 0; i < TopTen.Count; i++)
+            for (int i = 0; i < 10; i++)
             {
                 tempText[i] = TopTen[i].ToString();
             }
@@ -74,30 +74,30 @@ namespace OOPGameSnakeV2
 
         public void Render(ConsoleGraphics graphics)
         {
-            background.Render(graphics);
-            snake.Render(graphics);
-            food.Render(graphics);
         }
 
         public void Update(GameEngine engine)
         {
-            snake.Update(engine);
-            snake.Eat(food);
-            Score = snake.FoodEated * 10;
-            snake.HitItself();
-            if (snake.HitItself())
+            if (snake.CanMove)
             {
-                for (int i = 0; i < TopTen.Count; i++)
+                snake.Move();            
+                snake.Eat(food);
+                snake.HitItself();
+            }
+            Score = snake.FoodEated * 10;
+            if (snake.IsHit)
+            {                
+                for (int i = 0; i < 10; i++)
                 {
                     if (Score > TopTen[i])
                     {
                         TopTen.Insert(i, Score);
                         TopTen.Remove(TopTen.Last());
+                        UpdateTopTenFile();
                         break;
                     }
                 }
-
-                UpdateTopTenFile();
+                
                 StartNewGame();
             }
         }
