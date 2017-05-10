@@ -43,7 +43,6 @@ namespace OOPGameSnakeV2
                     {
                         body.Insert(0, new Cell(body.First().X, yEnd - Cell.Size, color));
                     }
-                    body.Remove(body.Last());
                     break;
                 }
                 case Direction.Right:
@@ -56,7 +55,6 @@ namespace OOPGameSnakeV2
                     {
                         body.Insert(0, new Cell(xStart, body.First().Y, color));
                     }
-                    body.Remove(body.Last());
                     break;
                 }
                 case Direction.Down:
@@ -69,7 +67,6 @@ namespace OOPGameSnakeV2
                     {
                         body.Insert(0, new Cell(body.First().X, yStart, color));
                     }
-                    body.Remove(body.Last());
                     break;
                 }
                 case Direction.Left:
@@ -81,11 +78,11 @@ namespace OOPGameSnakeV2
                     else
                     {
                         body.Insert(0, new Cell(xEnd - Cell.Size, body.First().Y, color));
-                    }
-                    body.Remove(body.Last());
+                    }                    
                     break;
                 }
             }
+            body.Remove(body.Last());
         }
 
         public void Eat(Food food)

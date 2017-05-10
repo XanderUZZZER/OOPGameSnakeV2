@@ -19,7 +19,6 @@ namespace OOPGameSnakeV2
 
         public static int Score = 0;
         public static List<int> TopTen = new List<int>();
-        //private string[] tempText;
 
         public PlayingArea()
         {
