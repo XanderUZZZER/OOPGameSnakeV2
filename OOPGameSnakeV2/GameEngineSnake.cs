@@ -15,19 +15,17 @@ namespace OOPGameSnakeV2
             background = new Background();
             food = new Food(background.X, background.Y, background.WidthActive, background.HeightActive, Color.Red);
             snake = new Snake(background.X, background.Y, background.WidthActive, background.HeightActive);
-            playingArea = new PlayingArea(background, snake, food);
-            statArea = new StatArea(PlayingArea.Width, 0, graphics.ClientWidth - PlayingArea.Width, PlayingArea.Height);
+            //playingArea = new PlayingArea(background, snake, food);
+            statArea = new StatArea(PlayingArea.Width, 0, graphics.ClientWidth - PlayingArea.Width, PlayingArea.Height, snake);
 
             AddObject(background);
             background.Initialize(this);
 
             AddObject(snake);
             snake.Initialize(this); 
-
             
-
-            //AddObject(food);
-            AddObject(playingArea);            
+            AddObject(food);
+           // AddObject(playingArea);            
             AddObject(statArea);
         }
     }

@@ -7,7 +7,7 @@ namespace OOPGameSnakeV2
 {
     class Snake : IGameObject
     {
-        public List<Cell> body = new List<Cell>(3);            //default snake body consists of 3 cells
+        public List<Cell> body = new List<Cell>();            //default snake body consists of 3 cells   
         private int xStart;                                     //available top left coords
         private int yStart;
         private int xEnd;                                       //available bottom right coords
@@ -15,9 +15,9 @@ namespace OOPGameSnakeV2
         private Direction direction = Direction.Up;
         private Direction prohibitedDirection = Direction.Down; //snake can't move back
         private Color color = Color.Black;
-        public int FoodEated { get; private set; } = 0;
+        public int FoodEated { get; private set; }
         public bool CanMove { get; private set; } = false;
-        public bool IsHit { get; private set; } = false;        //flag indicates, that snake hits itself
+        public bool IsHit { get; private set; }                 //flag indicates, that snake hits itself
 
         public Snake(int xStart, int yStart, int xEnd, int yEnd)
         {
@@ -27,22 +27,15 @@ namespace OOPGameSnakeV2
             this.yEnd = yEnd + yStart;
 
             CreateNewSnake();
-            //foreach (Cell c in body)
-            //{
-            //    engine.AddObject(c);
-            //    //engine.AddObject(new Cell(c.X, c.Y, Color.Red));                
-            //}
         }
 
         public void CreateNewSnake()
-        {
-            body.Clear();
+        {           
             body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + yStart, color));                    //snake start position, from the center
             body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + Cell.Size + yStart, color));
             body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + Cell.Size * 2 + yStart, color));
             FoodEated = 0;
-            IsHit = false;
-            
+            IsHit = false;            
         }
 
         public void Initialize(GameEngine engine)
@@ -50,23 +43,39 @@ namespace OOPGameSnakeV2
             foreach (Cell c in body)
             {
                 engine.AddObject(c);
-                //engine.AddObject(new Cell(c.X, c.Y, Color.Red));                
             }
         }
 
         public void Move()
         {
+            for (int i = body.Count - 1; i > 0; i--)
+            {
+                //body.Last().Color = Color.ForegroundColor;
+                //body[i] = body[i - 1];
+                body[i].X = body[i - 1].X;
+                body[i].Y = body[i - 1].Y;
+            }
+
             switch (direction)
             {
+                
                 case Direction.Up:
                     {
                         if (body.First().Y != yStart)
-                        {
-                            body.Insert(0, new Cell(body.First().X, body.First().Y - Cell.Size, color));
+                        {                            
+                            body.First().X = body.First().X;
+                            body.First().Y = body.First().Y - Cell.Size;
+                            //body.First().X = body.First().X;
+                            //body.First().Y = body.First().Y - Cell.Size;
+                            //body.Insert(0, new Cell(body.First().X, body.First().Y - Cell.Size, color));
                         }
                         else
                         {
-                            body.Insert(0, new Cell(body.First().X, yEnd - Cell.Size, color));
+                            body.First().X = body.First().X;
+                            body.First().Y = yEnd - Cell.Size;
+                            //body.Last().X = body.First().X;
+                            //body.Last().Y = yEnd - Cell.Size;
+                            //body.Insert(0, new Cell(body.First().X, yEnd - Cell.Size, color));
                         }
                         break;
                     }
@@ -74,11 +83,19 @@ namespace OOPGameSnakeV2
                     {
                         if (body.First().X != xEnd - Cell.Size)
                         {
-                            body.Insert(0, new Cell(body.First().X + Cell.Size, body.First().Y, color));
+                            body.First().X = body.First().X + Cell.Size;
+                            body.First().Y = body.First().Y;
+                            //body.Last().X = body.First().X + Cell.Size;
+                            //body.Last().Y = body.First().Y;
+                            //body.Insert(0, new Cell(body.First().X + Cell.Size, body.First().Y, color));
                         }
                         else
                         {
-                            body.Insert(0, new Cell(xStart, body.First().Y, color));
+                            body.First().X = xStart;
+                            body.First().Y = body.First().Y;
+                            //body.Last().X = xStart;
+                            //body.Last().Y = body.First().Y;
+                            //body.Insert(0, new Cell(xStart, body.First().Y, color));
                         }
                         break;
                     }
@@ -86,11 +103,19 @@ namespace OOPGameSnakeV2
                     {
                         if (body.First().Y != yEnd - Cell.Size)
                         {
-                            body.Insert(0, new Cell(body.First().X, body.First().Y + Cell.Size, color));
+                            body.First().X = body.First().X;
+                            body.First().Y = body.First().Y + Cell.Size;
+                            //body.Last().X = body.First().X;
+                            //body.Last().Y = body.First().Y + Cell.Size;
+                            //body.Insert(0, new Cell(body.First().X, body.First().Y + Cell.Size, color));
                         }
                         else
                         {
-                            body.Insert(0, new Cell(body.First().X, yStart, color));
+                            body.First().X = body.First().X;
+                            body.First().Y = yStart;
+                            //body.Last().X = body.First().X;
+                            //body.Last().Y = yStart;
+                            //body.Insert(0, new Cell(body.First().X, yStart, color));
                         }
                         break;
                     }
@@ -98,16 +123,23 @@ namespace OOPGameSnakeV2
                     {
                         if (body.First().X != xStart)
                         {
-                            body.Insert(0, new Cell(body.First().X - Cell.Size, body.First().Y, color));
+                            body.First().X = body.First().X - Cell.Size;
+                            body.First().Y = body.First().Y;
+                            //body.Last().X = body.First().X - Cell.Size;
+                            //body.Last().Y = body.First().Y;
+                            //body.Insert(0, new Cell(body.First().X - Cell.Size, body.First().Y, color));
                         }
                         else
                         {
-                            body.Insert(0, new Cell(xEnd - Cell.Size, body.First().Y, color));
+                            body.First().X = xEnd - Cell.Size;
+                            body.First().Y = body.First().Y;
+                            //body.Last().X = xEnd - Cell.Size;
+                            //body.Last().Y = body.First().Y;
+                            //body.Insert(0, new Cell(xEnd - Cell.Size, body.First().Y, color));
                         }
                         break;
                     }
             }
-            body.Remove(body.Last());
         }
 
         public void Eat(Food food)
@@ -147,7 +179,7 @@ namespace OOPGameSnakeV2
         }
 
         public void Render(ConsoleGraphics graphics)
-        {
+        {            
         }
 
         public void Update(GameEngine engine)
@@ -156,8 +188,7 @@ namespace OOPGameSnakeV2
             if (CanMove)
             {
                 Move();
-               
-                HitItself();
+                //HitItself();
             }
             if (Input.IsKeyDown(Keys.UP) && (prohibitedDirection != Direction.Up))
             {
