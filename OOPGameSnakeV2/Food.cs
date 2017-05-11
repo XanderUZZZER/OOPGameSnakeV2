@@ -18,7 +18,7 @@ namespace OOPGameSnakeV2
             XEnd = xEnd;
             YEnd = yEnd;
             CanCreateNext = true;
-            CreateNext();
+            CreateNext();            
         }
 
         public void CreateNext()
@@ -33,6 +33,8 @@ namespace OOPGameSnakeV2
 
         public void Update(GameEngine engine)
         {
+            //engine.AddObject(new Cell(X, Y, Color.Red));
+            engine.AddObject(this);
         }
     }
 }

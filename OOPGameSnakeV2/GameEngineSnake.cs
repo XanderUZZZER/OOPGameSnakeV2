@@ -19,8 +19,16 @@ namespace OOPGameSnakeV2
             statArea = new StatArea(PlayingArea.Width, 0, graphics.ClientWidth - PlayingArea.Width, PlayingArea.Height);
 
             AddObject(background);
-            AddObject(food);
-            AddObject(snake);            
+
+            AddObject(snake);
+
+            //foreach (Cell c in snake.body)
+            //{
+            //    AddObject(new Cell(c.X, c.Y, c.Color));
+            //    AddObject(c);
+            //}
+
+            //AddObject(food);
             AddObject(playingArea);            
             AddObject(statArea);
         }

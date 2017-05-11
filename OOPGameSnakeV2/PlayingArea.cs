@@ -78,12 +78,12 @@ namespace OOPGameSnakeV2
 
         public void Update(GameEngine engine)
         {
-            if (snake.CanMove)
-            {
-                snake.Move();            
-                snake.Eat(food);
-                snake.HitItself();
-            }
+            //if (snake.CanMove)
+            //{
+            //    snake.Move();            
+            //    snake.Eat(food);
+            //    snake.HitItself();
+            //}
             Score = snake.FoodEated * 10;
             if (snake.IsHit)
             {                
