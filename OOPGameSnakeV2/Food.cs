@@ -33,7 +33,6 @@ namespace OOPGameSnakeV2
 
         public void Update(GameEngine engine)
         {
-            
         }
     }
 }

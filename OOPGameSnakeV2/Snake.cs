@@ -18,27 +18,36 @@ namespace OOPGameSnakeV2
         public int FoodEated { get; private set; }
         public bool CanMove { get; private set; } = false;
         public bool IsHit { get; private set; }                 //flag indicates, that snake hits itself
+        private GameEngine engine;
 
-        public Snake(int xStart, int yStart, int xEnd, int yEnd)
+        public Snake(int xStart, int yStart, int xEnd, int yEnd, GameEngine engine)
         {
             this.xStart = xStart;
             this.yStart = yStart;
             this.xEnd = xEnd + xStart;
             this.yEnd = yEnd + yStart;
-
+            this.engine = engine;
             CreateNewSnake();
         }
 
         public void CreateNewSnake()
-        {           
+        {
+            foreach (var c in body)
+            {
+                c.Color = Color.ForegroundColor;
+            }
+            body.Clear();        
             body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + yStart, color));                    //snake start position, from the center
             body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + Cell.Size + yStart, color));
             body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + Cell.Size * 2 + yStart, color));
             FoodEated = 0;
-            IsHit = false;            
+            IsHit = false;
+            direction = Direction.Up;
+            prohibitedDirection = Direction.Down;
+            Initialize();
         }
 
-        public void Initialize(GameEngine engine)
+        public void Initialize()
         {
             foreach (Cell c in body)
             {
@@ -50,32 +59,23 @@ namespace OOPGameSnakeV2
         {
             for (int i = body.Count - 1; i > 0; i--)
             {
-                //body.Last().Color = Color.ForegroundColor;
-                //body[i] = body[i - 1];
                 body[i].X = body[i - 1].X;
                 body[i].Y = body[i - 1].Y;
             }
 
             switch (direction)
             {
-                
                 case Direction.Up:
                     {
                         if (body.First().Y != yStart)
                         {                            
                             body.First().X = body.First().X;
                             body.First().Y = body.First().Y - Cell.Size;
-                            //body.First().X = body.First().X;
-                            //body.First().Y = body.First().Y - Cell.Size;
-                            //body.Insert(0, new Cell(body.First().X, body.First().Y - Cell.Size, color));
                         }
                         else
                         {
                             body.First().X = body.First().X;
                             body.First().Y = yEnd - Cell.Size;
-                            //body.Last().X = body.First().X;
-                            //body.Last().Y = yEnd - Cell.Size;
-                            //body.Insert(0, new Cell(body.First().X, yEnd - Cell.Size, color));
                         }
                         break;
                     }
@@ -85,17 +85,11 @@ namespace OOPGameSnakeV2
                         {
                             body.First().X = body.First().X + Cell.Size;
                             body.First().Y = body.First().Y;
-                            //body.Last().X = body.First().X + Cell.Size;
-                            //body.Last().Y = body.First().Y;
-                            //body.Insert(0, new Cell(body.First().X + Cell.Size, body.First().Y, color));
                         }
                         else
                         {
                             body.First().X = xStart;
                             body.First().Y = body.First().Y;
-                            //body.Last().X = xStart;
-                            //body.Last().Y = body.First().Y;
-                            //body.Insert(0, new Cell(xStart, body.First().Y, color));
                         }
                         break;
                     }
@@ -105,17 +99,11 @@ namespace OOPGameSnakeV2
                         {
                             body.First().X = body.First().X;
                             body.First().Y = body.First().Y + Cell.Size;
-                            //body.Last().X = body.First().X;
-                            //body.Last().Y = body.First().Y + Cell.Size;
-                            //body.Insert(0, new Cell(body.First().X, body.First().Y + Cell.Size, color));
                         }
                         else
                         {
                             body.First().X = body.First().X;
                             body.First().Y = yStart;
-                            //body.Last().X = body.First().X;
-                            //body.Last().Y = yStart;
-                            //body.Insert(0, new Cell(body.First().X, yStart, color));
                         }
                         break;
                     }
@@ -125,24 +113,18 @@ namespace OOPGameSnakeV2
                         {
                             body.First().X = body.First().X - Cell.Size;
                             body.First().Y = body.First().Y;
-                            //body.Last().X = body.First().X - Cell.Size;
-                            //body.Last().Y = body.First().Y;
-                            //body.Insert(0, new Cell(body.First().X - Cell.Size, body.First().Y, color));
                         }
                         else
                         {
                             body.First().X = xEnd - Cell.Size;
                             body.First().Y = body.First().Y;
-                            //body.Last().X = xEnd - Cell.Size;
-                            //body.Last().Y = body.First().Y;
-                            //body.Insert(0, new Cell(xEnd - Cell.Size, body.First().Y, color));
                         }
                         break;
                     }
             }
         }
 
-        public void Eat(Food food)
+        public void Eat(Food food, GameEngine engine)
         {
             if ((body.First().X == food.X) && (body.First().Y == food.Y))
             {
@@ -161,6 +143,7 @@ namespace OOPGameSnakeV2
                         }
                     }
                 } while (food.CanCreateNext);
+                engine.AddObject(body.First());
             }
         }
 
@@ -184,12 +167,6 @@ namespace OOPGameSnakeV2
 
         public void Update(GameEngine engine)
         {
-            
-            if (CanMove)
-            {
-                Move();
-                //HitItself();
-            }
             if (Input.IsKeyDown(Keys.UP) && (prohibitedDirection != Direction.Up))
             {
                 direction = Direction.Up;

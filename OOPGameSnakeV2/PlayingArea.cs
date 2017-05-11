@@ -27,16 +27,15 @@ namespace OOPGameSnakeV2
             X = background.X;
             Y = background.Y;
             this.snake = snake;
-            this.food = food;            
+            this.food = food;
             StartNewGame();
         }
 
         void StartNewGame()
         {
             LoadTopTen();
+            snake.CreateNewSnake();
             food.CreateNext();
-            snake.CreateNewSnake();     
-            
         }
 
         void LoadTopTen()
@@ -78,16 +77,16 @@ namespace OOPGameSnakeV2
 
         public void Update(GameEngine engine)
         {
-            //if (snake.CanMove)
-            //{
-            //    snake.Move();            
-            //    snake.Eat(food);
-            //    snake.HitItself();
-            //}
+            if (snake.CanMove)
+            {
+                snake.Move();
+                snake.Eat(food, engine);
+                snake.HitItself();
+            }
             Score = snake.FoodEated * 10;
             if (snake.IsHit)
             {                
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < TopTen.Count; i++)
                 {
                     if (Score > TopTen[i])
                     {
