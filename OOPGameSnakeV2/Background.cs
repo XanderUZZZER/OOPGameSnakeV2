@@ -15,7 +15,7 @@ namespace OOPGameSnakeV2
         public int BorderThikcness { get; set; } = 4;
         public Color BorderColor { get; set; } = Color.Black;
 
-        public Background(GameEngine engine)
+        public Background()
         {
             WidthActive = Cell.Size * 10;
             HeightActive = Cell.Size * 20;
@@ -23,7 +23,10 @@ namespace OOPGameSnakeV2
             HeightTotal = HeightActive + BorderThikcness * 2;
             X = BorderThikcness;
             Y = BorderThikcness;
+        }
 
+        public void Initialize(GameEngine engine)
+        {
             for (int y = Y; y < HeightActive; y += Cell.Size)
             {
                 for (int x = X; x < WidthActive; x += Cell.Size)

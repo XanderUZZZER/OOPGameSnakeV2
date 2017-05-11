@@ -45,6 +45,15 @@ namespace OOPGameSnakeV2
             
         }
 
+        public void Initialize(GameEngine engine)
+        {
+            foreach (Cell c in body)
+            {
+                engine.AddObject(c);
+                //engine.AddObject(new Cell(c.X, c.Y, Color.Red));                
+            }
+        }
+
         public void Move()
         {
             switch (direction)
