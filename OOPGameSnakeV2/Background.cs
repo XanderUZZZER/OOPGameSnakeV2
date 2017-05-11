@@ -13,26 +13,17 @@ namespace OOPGameSnakeV2
         public int HeightActive { get; set; }                       //classic game field consists of 10*20 cells
         public Color Color { get; set; } = Color.BackgroundColor;
         public int BorderThikcness { get; set; } = 4;
-        public Color BorderColor { get; set; } = Color.Black;        
+        public Color BorderColor { get; set; } = Color.Black;
 
-        public Background()
+        public Background(GameEngine engine)
         {
-            WidthActive = Cell.Size * 10;            
+            WidthActive = Cell.Size * 10;
             HeightActive = Cell.Size * 20;
             WidthTotal = WidthActive + BorderThikcness * 2;
             HeightTotal = HeightActive + BorderThikcness * 2;
             X = BorderThikcness;
             Y = BorderThikcness;
-        }
 
-        public void Render(ConsoleGraphics graphics)
-        {
-            graphics.FillRectangle((uint)BorderColor, 0, 0, WidthTotal, HeightTotal);                   // Draw border
-            graphics.FillRectangle((uint)Color, X, Y, WidthActive, HeightActive);                       // Draw background
-        }
-
-        public void Update(GameEngine engine)
-        {
             for (int y = Y; y < HeightActive; y += Cell.Size)
             {
                 for (int x = X; x < WidthActive; x += Cell.Size)
@@ -40,6 +31,18 @@ namespace OOPGameSnakeV2
                     engine.AddObject(new Cell(x, y, Color.ForegroundColor));   // Draw decorative filling of the background
                 }
             }
+        }
+
+        public void Render(ConsoleGraphics graphics)
+        {
+            graphics.FillRectangle((uint)BorderColor, 0, 0, WidthTotal, HeightTotal);                   // Draw border
+            graphics.FillRectangle((uint)Color, X, Y, WidthActive, HeightActive);                       // Draw background
+
+        }
+
+        public void Update(GameEngine engine)
+        {
+
         }
     }
 }

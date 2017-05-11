@@ -20,13 +20,13 @@ namespace OOPGameSnakeV2
 
             AddObject(background);
 
-            AddObject(snake);
+            //AddObject(snake);
 
-            //foreach (Cell c in snake.body)
-            //{
-            //    AddObject(new Cell(c.X, c.Y, c.Color));
-            //    AddObject(c);
-            //}
+            foreach (Cell c in snake.body)
+            {
+                //AddObject(new Cell(c.X, c.Y, c.Color));
+                AddObject(c);
+            }
 
             //AddObject(food);
             AddObject(playingArea);            

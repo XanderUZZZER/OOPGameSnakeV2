@@ -27,6 +27,11 @@ namespace OOPGameSnakeV2
             this.yEnd = yEnd + yStart;
 
             CreateNewSnake();
+            //foreach (Cell c in body)
+            //{
+            //    engine.AddObject(c);
+            //    //engine.AddObject(new Cell(c.X, c.Y, Color.Red));                
+            //}
         }
 
         public void CreateNewSnake()
@@ -37,6 +42,7 @@ namespace OOPGameSnakeV2
             body.Add(new Cell((xEnd - xStart) / 2 + xStart, (yEnd - yStart) / 2 + Cell.Size * 2 + yStart, color));
             FoodEated = 0;
             IsHit = false;
+            
         }
 
         public void Move()
@@ -137,11 +143,7 @@ namespace OOPGameSnakeV2
 
         public void Update(GameEngine engine)
         {
-            foreach (Cell c in body)
-            {
-                engine.AddObject(c);
-                //engine.AddObject(new Cell(c.X, c.Y, Color.Red));                
-            }
+            
             if (CanMove)
             {
                 Move();
